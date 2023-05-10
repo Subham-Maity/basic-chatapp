@@ -15,6 +15,16 @@ const server2 = http.createServer(app2);
 const io1 = socketio(server1);
 const io2 = socketio(server2);
 
+// Serve the index.html file for client1
+app1.get("/", (req, res) => {
+  res.sendFile(__dirname + "/public/index.html");
+});
+
+// Serve the index2.html file for client2
+app2.get("/", (req, res) => {
+  res.sendFile(__dirname + "/public/index2.html");
+});
+
 // Serve the static files from the public folder
 app1.use(express.static("public"));
 app2.use(express.static("public"));

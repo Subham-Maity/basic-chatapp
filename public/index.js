@@ -1,16 +1,10 @@
-// Connect to the server1 on port 3000
-const socket1 = io("http://localhost:3000");
-
-// Connect to the server2 on port 3001
-const socket2 = io("http://localhost:3001");
+// Connect to the server on port 3000
+const socket = io("http://localhost:3000");
 
 // Get the DOM elements
-const form1 = document.getElementById("form1");
-const input1 = document.getElementById("input1");
-const messages1 = document.getElementById("messages1");
-const form2 = document.getElementById("form2");
-const input2 = document.getElementById("input2");
-const messages2 = document.getElementById("messages2");
+const form = document.getElementById("form1");
+const input = document.getElementById("input1");
+const messages = document.getElementById("messages1");
 
 // Add a function to append a new message to the list
 const appendMessage = (msg, list) => {
@@ -21,40 +15,21 @@ const appendMessage = (msg, list) => {
   list.scrollTop = list.scrollHeight;
 };
 
-// Listen for form submission on chat box 1
-form1.addEventListener("submit", (e) => {
+// Listen for form submission
+form.addEventListener("submit", function (e) {
   e.preventDefault();
-  if (input1.value) {
-    // Emit the chat message to the server1
-    socket1.emit("chat message", input1.value);
+  if (input.value) {
+    // Emit the chat message to the server
+    socket.emit("chat message", input.value);
     // Append the message to the list as self
-    appendMessage(`Client 1: ${input1.value}`, messages1);
+    appendMessage(`Client 1: ${input.value}`, messages);
     // Clear the input field
-    input1.value = "";
+    input.value = "";
   }
 });
 
-// Listen for form submission on chat box 2
-form2.addEventListener("submit", (e) => {
-  e.preventDefault();
-  if (input2.value) {
-    // Emit the chat message to the server2
-    socket2.emit("chat message", input2.value);
-    // Append the message to the list as self
-    appendMessage(`Client 2: ${input2.value}`, messages2);
-    // Clear the input field
-    input2.value = "";
-  }
-});
-
-// Listen for chat messages from the server1
-socket1.on("chat message", (msg) => {
+// Listen for chat messages from the server
+socket.on("chat message", function (msg) {
   // Append the message to the list as other
-  appendMessage(`Client 2: ${msg}`, messages1);
-});
-
-// Listen for chat messages from the server2
-socket2.on("chat message", (msg) => {
-  // Append the message to the list as other
-  appendMessage(`Client 1: ${msg}`, messages2);
+  appendMessage(`Client 2: ${msg}`, messages);
 });
