@@ -1,32 +1,54 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        clifford: "#da373d",
+                    },
+                },
+            },
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+
     <title>Chat App</title>
-    <!-- Link to Tailwind CSS CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
     <!-- Link to socket.io client script -->
     <script src="/socket.io/socket.io.js"></script>
 </head>
 
-<body class="bg-gray-800">
+<body class="bg-gradient-to-b from-gray-900 to-gray-600 bg-gradient-to-r">
     <div class="container mx-auto px-4 py-8">
-        <h1 class="text-4xl font-bold text-center text-white">Chat App</h1>
-        <div class="mt-8 grid grid-cols-2 gap-4">
-            <!-- Chat box for Client 1 -->
-            <div class="bg-gray-400 rounded-lg shadow-lg p-4">
-                <h2 class="text-2xl font-bold text-center text-white">Client 1</h2>
-                <ul id="messages1" class="list-none overflow-y-auto h-64"></ul>
-                <form id="form1" class="mt-4 flex items-center">
-                    <input id="input1" type="text"
-                        class="flex-grow border border-gray-300 rounded-l-lg p-2 focus:outline-none focus:ring-2 focus:ring-pink-600"
-                        placeholder="Type a message...">
-                    <button type="submit"
-                        class="bg-pink-600 text-white rounded-r-lg p-2 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-600 animate-pulse">Send</button>
-                </form>
+        <h1
+            class="text-center font-extrabold text-transparent text-6xl mb-4 pb-4 bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+            Chat App
+        </h1>
+        <div class="mt-8 flex justify-center">
+            <div class="w-full max-w-md">
+                <!-- Chat box for Client 1 -->
+                <div class="bg-gradient-to-r from-indigo-300 to-purple-400 rounded-lg shadow-lg p-4">
+                    <h2
+                        class="text-center font-extrabold text-transparent text-4xl mb-4 pb-4 bg-clip-text bg-gradient-to-b from-gray-900 to-gray-600 bg-gradient-to-r">
+                        Client 1
+                    </h2>
+                    <ul id="messages1" class="list-none overflow-y-auto h-64"></ul>
+                    <form id="form1" class="mt-4 flex items-center">
+                        <input id="input1" type="text"
+                            class="flex-grow border border-gray-300 rounded-l-lg p-2 focus:outline-none focus:ring-2 focus:ring-pink-600"
+                            placeholder="Type a message..." />
+                        <button type="submit"
+                            class="bg-pink-600 text-white rounded-r-lg p-2 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-600 animate-pulse">
+                            Send
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
