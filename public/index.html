@@ -1,0 +1,68 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <!-- Link to Tailwind CSS CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <!-- Link to socket.io client script -->
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center text-blue-600">Chat App</h1>
+        <div class="mt-8 bg-white rounded-lg shadow-lg p-4">
+            <ul id="messages" class="list-none overflow-y-auto h-64"></ul>
+            <form id="form" class="mt-4 flex items-center">
+                <input id="input" type="text"
+                    class="flex-grow border border-gray-300 rounded-l-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    placeholder="Type a message...">
+                <button type="submit"
+                    class="bg-blue-600 text-white rounded-r-lg p-2 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600">Send</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Connect to the socket.io server
+        const socket = io();
+
+        // Get the DOM elements
+        const form = document.getElementById('form');
+        const input = document.getElementById('input');
+        const messages = document.getElementById('messages');
+
+        // Add a function to append a new message to the list
+        const appendMessage = (msg) => {
+            const li = document.createElement('li');
+            li.textContent = msg;
+            li.className = 'p-2 break-all';
+            messages.appendChild(li);
+            messages.scrollTop = messages.scrollHeight;
+        };
+
+        // Listen for form submission
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (input.value) {
+                // Emit the chat message to the server
+                socket.emit('chat message', input.value);
+                // Append the message to the list as self
+                appendMessage(`You: ${input.value}`);
+                // Clear the input field
+                input.value = '';
+            }
+        });
+
+        // Listen for chat messages from the server
+        socket.on('chat message', (msg) => {
+            // Append the message to the list as other
+            appendMessage(`Other: ${msg}`);
+        });
+    </script>
+</body>
+
+</html>
