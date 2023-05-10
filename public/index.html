@@ -12,55 +12,96 @@
     <script src="/socket.io/socket.io.js"></script>
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-800">
     <div class="container mx-auto px-4 py-8">
-        <h1 class="text-4xl font-bold text-center text-blue-600">Chat App</h1>
-        <div class="mt-8 bg-white rounded-lg shadow-lg p-4">
-            <ul id="messages" class="list-none overflow-y-auto h-64"></ul>
-            <form id="form" class="mt-4 flex items-center">
-                <input id="input" type="text"
-                    class="flex-grow border border-gray-300 rounded-l-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                    placeholder="Type a message...">
-                <button type="submit"
-                    class="bg-blue-600 text-white rounded-r-lg p-2 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600">Send</button>
-            </form>
+        <h1 class="text-4xl font-bold text-center text-white">Chat App</h1>
+        <div class="mt-8 grid grid-cols-2 gap-4">
+            <!-- Chat box for Client 1 -->
+            <div class="bg-gray-400 rounded-lg shadow-lg p-4">
+                <h2 class="text-2xl font-bold text-center text-white">Client 1</h2>
+                <ul id="messages1" class="list-none overflow-y-auto h-64"></ul>
+                <form id="form1" class="mt-4 flex items-center">
+                    <input id="input1" type="text"
+                        class="flex-grow border border-gray-300 rounded-l-lg p-2 focus:outline-none focus:ring-2 focus:ring-pink-600"
+                        placeholder="Type a message...">
+                    <button type="submit"
+                        class="bg-pink-600 text-white rounded-r-lg p-2 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-600 animate-pulse">Send</button>
+                </form>
+            </div>
+            <!-- Chat box for Client 2 -->
+            <div class="bg-gray-400 rounded-lg shadow-lg p-4">
+                <h2 class="text-2xl font-bold text-center text-white">Client 2</h2>
+                <ul id="messages2" class="list-none overflow-y-auto h-64"></ul>
+                <form id="form2" class="mt-4 flex items-center">
+                    <input id="input2" type="text"
+                        class="flex-grow border border-gray-300 rounded-l-lg p-2 focus:outline-none focus:ring-2 focus:ring-pink-600"
+                        placeholder="Type a message...">
+                    <button type="submit"
+                        class="bg-pink-600 text-white rounded-r-lg p-2 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-600 animate-pulse">Send</button>
+                </form>
+            </div>
         </div>
     </div>
     <script>
-        // Connect to the socket.io server
-        const socket = io();
+        // Connect to the server1 on port 3000
+        const socket1 = io('http://localhost:3000');
+
+        // Connect to the server2 on port 3001
+        const socket2 = io('http://localhost:3001');
 
         // Get the DOM elements
-        const form = document.getElementById('form');
-        const input = document.getElementById('input');
-        const messages = document.getElementById('messages');
+        const form1 = document.getElementById('form1');
+        const input1 = document.getElementById('input1');
+        const messages1 = document.getElementById('messages1');
+        const form2 = document.getElementById('form2');
+        const input2 = document.getElementById('input2');
+        const messages2 = document.getElementById('messages2');
 
         // Add a function to append a new message to the list
-        const appendMessage = (msg) => {
+        const appendMessage = (msg, list) => {
             const li = document.createElement('li');
             li.textContent = msg;
             li.className = 'p-2 break-all';
-            messages.appendChild(li);
-            messages.scrollTop = messages.scrollHeight;
+            list.appendChild(li);
+            list.scrollTop = list.scrollHeight;
         };
 
-        // Listen for form submission
-        form.addEventListener('submit', (e) => {
+        // Listen for form submission on chat box 1
+        form1.addEventListener('submit', (e) => {
             e.preventDefault();
-            if (input.value) {
-                // Emit the chat message to the server
-                socket.emit('chat message', input.value);
+            if (input1.value) {
+                // Emit the chat message to the server1
+                socket1.emit('chat message', input1.value);
                 // Append the message to the list as self
-                appendMessage(`You: ${input.value}`);
+                appendMessage(`Client 1: ${input1.value}`, messages1);
                 // Clear the input field
-                input.value = '';
+                input1.value = '';
             }
         });
 
-        // Listen for chat messages from the server
-        socket.on('chat message', (msg) => {
+        // Listen for form submission on chat box 2
+        form2.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (input2.value) {
+                // Emit the chat message to the server2
+                socket2.emit('chat message', input2.value);
+                // Append the message to the list as self
+                appendMessage(`Client 2: ${input2.value}`, messages2);
+                // Clear the input field
+                input2.value = '';
+            }
+        });
+
+        // Listen for chat messages from the server1
+        socket1.on('chat message', (msg) => {
             // Append the message to the list as other
-            appendMessage(`Other: ${msg}`);
+            appendMessage(`Client 2: ${msg}`, messages1);
+        });
+
+        // Listen for chat messages from the server2
+        socket2.on('chat message', (msg) => {
+            // Append the message to the list as other
+            appendMessage(`Client 1: ${msg}`, messages2);
         });
     </script>
 </body>
