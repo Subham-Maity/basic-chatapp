@@ -15,6 +15,12 @@ const appendMessage = (msg, list) => {
   list.scrollTop = list.scrollHeight;
 };
 
+// Prompt user to specify duration of conversation
+const duration = prompt(
+  "Specify the duration of the conversation (in minutes):"
+);
+const endTime = new Date().getTime() + duration * 60 * 1000;
+
 // Listen for form submission
 form.addEventListener("submit", function (e) {
   e.preventDefault();
@@ -30,6 +36,13 @@ form.addEventListener("submit", function (e) {
 
 // Listen for chat messages from the server
 socket.on("chat message", function (msg) {
-  // Append the message to the list as other
-  appendMessage(`Client 2: ${msg}`, messages);
+  // Check if conversation time has elapsed
+  if (new Date().getTime() >= endTime) {
+    // End the conversation
+    appendMessage("Conversation has ended.", messages);
+    socket.disconnect();
+  } else {
+    // Append the message to the list as other
+    appendMessage(`Client 2: ${msg}`, messages);
+  }
 });
