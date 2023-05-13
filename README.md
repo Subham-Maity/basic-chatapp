@@ -1,6 +1,8 @@
 
 **This is a very basic chat app that serves the purpose of demonstrating how to setup and use socket.io in a chat app. The app is very simple and includes only the necessary features to demonstrate the setup process.**
 
+# [Stable Version with Guide](https://github.com/Subham-Maity/basic-chatapp/tree/9632b472211b579156d102972fc80f9f0072aac9)
+
 ![ezgif-3-ff918bac67](https://github.com/Subham-Maity/socket.io-demo/assets/97989643/9611dc61-46e7-40f8-98cb-b40ce3e960d4)
 
 ## How to Setup Guide
