@@ -5,6 +5,7 @@ const socket = io("http://localhost:3000");
 const form = document.getElementById("form1");
 const input = document.getElementById("input1");
 const messages = document.getElementById("messages1");
+const timer = document.getElementById("timer");
 
 // Add a function to append a new message to the list
 const appendMessage = (msg, list) => {
@@ -21,6 +22,24 @@ const duration = prompt(
 );
 const endTime = new Date().getTime() + duration * 60 * 1000;
 
+// Start the timer
+let timerInterval = setInterval(() => {
+  // Calculate the remaining time
+  const remainingTime = Math.max(0, endTime - new Date().getTime());
+  const remainingMinutes = Math.floor(remainingTime / 60000);
+  const remainingSeconds = Math.floor((remainingTime % 60000) / 1000);
+
+  // Update the timer contents
+  timer.textContent = `Time remaining: ${remainingMinutes}m ${remainingSeconds}s`;
+
+  // End the conversation if the time has elapsed
+  if (remainingTime === 0) {
+    appendMessage("Conversation has ended.", messages);
+    socket.disconnect();
+    clearInterval(timerInterval);
+  }
+}, 1000);
+
 // Listen for form submission
 form.addEventListener("submit", function (e) {
   e.preventDefault();
@@ -36,13 +55,13 @@ form.addEventListener("submit", function (e) {
 
 // Listen for chat messages from the server
 socket.on("chat message", function (msg) {
-  // Check if conversation time has elapsed
-  if (new Date().getTime() >= endTime) {
-    // End the conversation
-    appendMessage("Conversation has ended.", messages);
-    socket.disconnect();
-  } else {
-    // Append the message to the list as other
-    appendMessage(`Client 2: ${msg}`, messages);
-  }
+  // Append the message to the list as other
+  appendMessage(`Client 2: ${msg}`, messages);
+});
+
+// Listen for the conversation ended event
+socket.on("conversation ended", () => {
+  // Display a message to the user indicating that the conversation has ended
+  alert("The conversation has ended.");
+  clearInterval(timerInterval);
 });
