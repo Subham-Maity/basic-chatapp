@@ -23,9 +23,6 @@ _________________________
 # Tutorial
 _____________________
 
-
-Okay, I will rewrite the article using step by step instructions for the server and the client.
-
 # How to use Socket.io at a basic level
 
 Socket.io is a library that enables real-time, bidirectional and event-based communication between the browser and the server. It is built on top of the WebSocket protocol and provides additional features like fallback to HTTP long-polling or automatic reconnection.
