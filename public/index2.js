@@ -1,5 +1,23 @@
-// Connect to the server2 on port 3001
+const socket = io();
 const socket2 = io("http://localhost:3001");
+
+let username = prompt("Enter your username for Client 1:");
+
+// If no username is provided, set it to "Client 1"
+if (!username) {
+  username = "Client 1";
+}
+
+socket.emit("join", username);
+
+let username2 = prompt("Enter your username for Client 2:");
+
+// If no username is provided, set it to "Client 2"
+if (!username2) {
+  username2 = "Client 2";
+}
+
+socket2.emit("join", username2);
 
 // Get the DOM elements
 const form2 = document.getElementById("form2");

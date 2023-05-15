@@ -33,10 +33,15 @@ app2.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index2.html");
 });
 
+// Serve the index2.html file for client2
+app2.get("/", (req, res) => {
+  res.sendFile(__dirname + "/admin/index.html");
+});
+
 // Serve the static files from the public folder
 app1.use(express.static("public"));
 app2.use(express.static("public"));
-
+app2.use(express.static("admin"));
 // io1.on("connection")
 io1.on("connection", (socket) => {
   console.log("A user connected to server1");
@@ -74,7 +79,10 @@ io1.on("connection", (socket) => {
 
 // io2.on("connection")
 io2.on("connection", (socket) => {
-  console.log("A user connected to server2");
+  socket.on("join", (username) => {
+    socket.username = username || "Client";
+    console.log(`User '${socket.username}' connected to server2`);
+  });
 
   // Keep track of the start time and end time for each conversation
   let startTime = null;
@@ -131,9 +139,8 @@ io2.on("connection", (socket) => {
       io2.of("/").adapter.remoteDisconnect(user, true, () => {});
     });
 
-    // Listen for disconnections on server2
     socket.on("disconnect", () => {
-      console.log("A user disconnected from server2");
+      console.log(`User '${socket.username}' disconnected from server2`);
     });
   });
 
