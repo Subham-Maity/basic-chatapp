@@ -29,6 +29,9 @@ form.addEventListener("submit", function (e) {
   }
 });
 
+// Emit a join event to the server to indicate that client 2 has connected
+socket.emit("join");
+
 // Listen for chat messages from the server
 socket.on("chat message", function (msg) {
   // Append the message to the list as other

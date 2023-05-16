@@ -43,6 +43,7 @@ io1.on("connection", (socket) => {
 
   socket.on("join", () => {
     connectedClients.add(socket.id);
+    io1.emit("connected clients", connectedClients.size);
     if (connectedClients.size === 2 && timerValue !== null) {
       if (intervalFunction) {
         clearInterval(intervalFunction);
@@ -61,9 +62,14 @@ io1.on("connection", (socket) => {
     }
   });
 
+  socket.on("chat message", (msg) => {
+    io2.emit("chat message", msg);
+  });
+
   socket.on("disconnect", () => {
     console.log("A user disconnected from server1");
     connectedClients.delete(socket.id);
+    io1.emit("connected clients", connectedClients.size);
     if (connectedClients.size < 2 && intervalFunction) {
       clearInterval(intervalFunction);
       intervalFunction = null;
@@ -73,14 +79,41 @@ io1.on("connection", (socket) => {
 });
 
 io2.on("connection", (socket) => {
-  socket.on("join", () => {
-    console.log("A user connected to server2");
-  });
+  console.log("A user connected to server2");
 
   socket.on("join", () => {
-    console.log("A user connected to server2");
-    if (timerValue !== null) {
-      socket.emit("timer set", timerValue);
+    connectedClients.add(socket.id);
+    io1.emit("connected clients", connectedClients.size);
+    if (connectedClients.size === 2 && timerValue !== null) {
+      if (intervalFunction) {
+        clearInterval(intervalFunction);
+      }
+      let currentTime = timerValue;
+      intervalFunction = setInterval(() => {
+        currentTime -= 1;
+        io1.emit("timer update", currentTime);
+        io2.emit("timer update", currentTime);
+        if (currentTime === 0) {
+          clearInterval(intervalFunction);
+          io1.emit("conversation ended");
+          io2.emit("conversation ended");
+        }
+      }, 1000);
+    }
+  });
+
+  socket.on("chat message", (msg) => {
+    io1.emit("chat message", msg);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("A user disconnected from server2");
+    connectedClients.delete(socket.id);
+    io1.emit("connected clients", connectedClients.size);
+    if (connectedClients.size < 2 && intervalFunction) {
+      clearInterval(intervalFunction);
+      intervalFunction = null;
+      timerValue = null;
     }
   });
 });
