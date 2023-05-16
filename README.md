@@ -1,9 +1,13 @@
 
 **This is a very basic chat app that serves the purpose of demonstrating how to setup and use socket.io in a chat app. The app is very simple and includes only the necessary features to demonstrate the setup process.**
 
-# [Stable Version with Guide](https://github.com/Subham-Maity/basic-chatapp/tree/9632b472211b579156d102972fc80f9f0072aac9)
+
+# Without Timer 👉[Clone this](https://github.com/Subham-Maity/basic-chatapp/tree/9632b472211b579156d102972fc80f9f0072aac9)
 
 ![ezgif-3-ff918bac67](https://github.com/Subham-Maity/socket.io-demo/assets/97989643/9611dc61-46e7-40f8-98cb-b40ce3e960d4)
+
+# With Timing synchronization function👉[Clone this](https://github.com/Subham-Maity/basic-chatapp/tree/380e7fc993d8f7344f513b14ba542451c589e226)
+![With Timer](https://github.com/Subham-Maity/basic-chatapp/assets/97989643/8fb5b1bc-10ab-4022-bd81-0daa6bf6df97)
 
 ## How to Setup Guide
 To set up the chat app, please follow these steps:
