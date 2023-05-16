@@ -63,7 +63,7 @@ io1.on("connection", (socket) => {
     // Check if conversation time has elapsed
     if (new Date().getTime() >= endTime) {
       // End the conversation
-      io2.to(socket.id).emit("chat message", "Conversation has ended.");
+      io2.to(socket.id).emit("conversation ended");
       socket.disconnect();
     } else {
       // Broadcast the message to all other users on server2
@@ -101,7 +101,8 @@ io2.on("connection", (socket) => {
     // Check if conversation time has elapsed
     if (new Date().getTime() >= endTime) {
       // End the conversation
-      io1.to(socket.id).emit("chat message", "Conversation has ended.");
+      io1.to(socket.id).emit("conversation ended");
+
       socket.disconnect();
     } else {
       // Broadcast the message to all other users on server1

@@ -17,6 +17,7 @@ const appendMessage = (msg, list) => {
 };
 
 // Prompt user to specify duration of conversation
+// Prompt user to specify duration of conversation
 const duration = prompt(
   "Specify the duration of the conversation (in minutes):"
 );

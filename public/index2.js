@@ -23,6 +23,7 @@ socket2.emit("join", username2);
 const form2 = document.getElementById("form2");
 const input2 = document.getElementById("input2");
 const messages2 = document.getElementById("messages2");
+const timer = document.getElementById("timer");
 
 // Add a function to append a new message to the list
 const appendMessage = (msg, list) => {
@@ -32,6 +33,30 @@ const appendMessage = (msg, list) => {
   list.appendChild(li);
   list.scrollTop = list.scrollHeight;
 };
+
+// Prompt user to specify duration of conversation
+const duration = prompt(
+  "Specify the duration of the conversation (in minutes):"
+);
+const endTime = new Date().getTime() + duration * 60 * 1000;
+
+// Start the timer
+let timerInterval = setInterval(() => {
+  // Calculate the remaining time
+  const remainingTime = Math.max(0, endTime - new Date().getTime());
+  const remainingMinutes = Math.floor(remainingTime / 60000);
+  const remainingSeconds = Math.floor((remainingTime % 60000) / 1000);
+
+  // Update the timer contents
+  timer.textContent = `Time remaining: ${remainingMinutes}m ${remainingSeconds}s`;
+
+  // End the conversation if the time has elapsed
+  if (remainingTime === 0) {
+    appendMessage("Conversation has ended.", messages2);
+    socket2.disconnect();
+    clearInterval(timerInterval);
+  }
+}, 1000);
 
 // Listen for form submission on chat box 2
 form2.addEventListener("submit", function (e) {
@@ -47,7 +72,7 @@ form2.addEventListener("submit", function (e) {
 });
 
 // Listen for chat messages from the server1
-socket2.on("chat message", function (msg) {
+socket.on("chat message", function (msg) {
   // Append the message to the list as other
   appendMessage(`Client 1: ${msg}`, messages2);
 });
