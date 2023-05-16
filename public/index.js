@@ -17,11 +17,13 @@ const appendMessage = (msg, list) => {
 };
 
 // Prompt user to specify duration of conversation
-// Prompt user to specify duration of conversation
 const duration = prompt(
   "Specify the duration of the conversation (in minutes):"
 );
 const endTime = new Date().getTime() + duration * 60 * 1000;
+
+// Send the timer duration to the server
+socket.emit("set timer", duration);
 
 // Start the timer
 let timerInterval = setInterval(() => {
