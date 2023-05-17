@@ -1,4 +1,4 @@
-// Import dependencies
+'use client';
 import { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 
