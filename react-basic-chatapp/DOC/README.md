@@ -693,3 +693,69 @@ module.exports = {
 "exclude":["node_modules"]
 }
 ```
+
+
+
+### If you use app routes 
+
+To change your structure to the app router one, you need to do the following steps:
+
+- Create an app folder at the root level and move your favicon.ico, globals.css, layout.tsx and chat.tsx files there. Rename your chat.tsx file to page.tsx.
+- Delete your public and styles folders, as they are not needed anymore.
+- Modify your _app.tsx file to match the one I showed you before. You can also delete the import of "../styles/globals.css" and Layout from "../components/Layout", as they are not used anymore.
+- Modify your _document.tsx file to add the Tailwind CSS imports to the head element. You can also delete the import of "../styles/globals.css", as it is not used anymore.
+- Modify your server.js file to change the path of the favicon.ico file from "/favicon.ico" to "/app/favicon.ico".
+- Modify your package.json file to change the scripts for dev and dev:both. You need to add the --port 3001 option to the next dev command, as the server.js file is already using port 3000. You also need to add the --watch app option to the nodemon server.js command, as you want to watch for changes in the app folder. Here is how your scripts should look like:
+
+```json
+"scripts": {
+    // Use nodemon to start the server.js file and watch for changes in the app folder
+    "server": "nodemon server.js --watch app",
+    // Use next to start the Next.js app in development mode on port 3001
+    "dev": "next dev --port 3001",
+    // Use next to build the Next.js app for production
+    "build": "next build",
+    // Use next to start the Next.js app in production mode
+    "start": "next start",
+    // Use concurrently to run both the server and the dev scripts in parallel
+    "dev:both": "concurrently \"npm run server\" \"npm run dev\""
+  },
+```
+
+- Modify your tsconfig.json file to change the baseUrl from "." to "./app". This will make your import alias work correctly with the app folder. Here is how your baseUrl should look like:
+
+```json
+"baseUrl": "./app",
+```
+
+That's it. You have successfully changed your structure to the app router one. You can now run npm run dev:both and go to http://localhost:3001/app/page to see your chat app. You can also add more files under the app folder to create more app routes. You don't need to export a getRoutes function from your _app.tsx file, as the CLI tool already did that for you.
+
+Here is the file structure after changing to the app router one:
+
+```text
+my-app/
+├── .next
+├── node_modules
+├── app
+|   ├── favicon.ico
+|   ├── globals.css
+|   ├── layout.tsx
+|   ├── page.tsx
+|   ├── ChatBox.tsx # Renders the chat box with messages and input field
+|   ├── ChatList.tsx # Renders the list of online users
+|   └── Countdown.tsx # Renders the timer feature
+├── pages/ # Contains Next.js pages
+│   ├── _app.tsx # Overrides the default App component and exports getRoutes function
+│   └── _document.tsx # Overrides the default Document component and adds Tailwind CSS imports
+├── .gitignore
+├── next-env.d.ts
+├── next.config.js
+├── package-lock.json
+├── package.json # Contains modified scripts for dev and dev:both
+├── postcss.config.js
+├── README.md
+├── server.js # Contains modified path for favicon.ico file
+├── tailwind.config.js
+└── tsconfig.json # Contains modified baseUrl for app folder
+
+```
