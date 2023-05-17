@@ -1,34 +1,98 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# chat-app
+
+A Realtime Chat Application built using Node.js, Express, Socket.io, and Next.js
+
+---
 
 ## Getting Started
 
-First, run the development server:
+First, run the backend server:
 
 ```bash
 npm run dev
+
 # or
+
 yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then, run the frontend server:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run dev
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+# or
 
-## Learn More
+yarn dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Built With
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+-   [Node.js](https://nodejs.org/en/) - JavaScript runtime
+-   [Express](https://expressjs.com/) - Web framework for Node.js
+-   [Socket.io](https://socket.io/) - Realtime application framework
+-   [Next.js](https://nextjs.org/) - React framework for production
+-   [React](https://reactjs.org/) - JavaScript library for building user interfaces
+-   [TypeScript](https://www.typescriptlang.org/) - Typed JavaScript at Any Scale
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Backend
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The backend server is built using Node.js, Express, and Socket.io. It is responsible for handling the socket connections and emitting events to the frontend.
+
+### [Events](./client/config/events.ts)
+
+#### `join`
+
+Emitted when a user joins a room.
+
+##### Payload
+
+```typescript
+{
+	roomId: string;
+}
+```
+
+#### `send message`
+
+Emitted when a user sends a new message.
+
+##### Payload
+
+```typescript
+{
+	time: string;
+	roomId: string;
+	message: string;
+}
+```
+
+#### `create new room`
+
+Emitted when a user creates a new room.
+
+##### Payload
+
+```typescript
+{
+	roomName: string;
+}
+```
+
+---
+
+## Screenshots
+
+![screenshot_1](./client/screenshots/ss2.png)
+![screenshot_2](./client/screenshots/ss1.png)
+![screenshot_3](./client/screenshots/ss3.png)
+
+---
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](./LICENSE) file for details
