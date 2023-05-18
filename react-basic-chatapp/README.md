@@ -83,16 +83,7 @@ Emitted when a user creates a new room.
 }
 ```
 
----
 
-## Screenshots
 
-![screenshot_1](./client/screenshots/ss2.png)
-![screenshot_2](./client/screenshots/ss1.png)
-![screenshot_3](./client/screenshots/ss3.png)
 
----
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](./LICENSE) file for details
